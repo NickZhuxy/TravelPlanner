@@ -6,23 +6,22 @@ import UnassignedSpots from './UnassignedSpots';
 import styles from './SidePanel.module.css';
 
 export default function SidePanel() {
-  const { trip, addDay, reorderSegments } = useTrip();
+  const { trip, addDay, reorderDaySpots } = useTrip();
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    // Find which day contains the dragged segment
+    // Find which day contains the dragged spot
     for (const day of trip.days) {
-      const segmentIds = day.segments.map((s) => s.id);
-      const activeIndex = segmentIds.indexOf(active.id as string);
-      const overIndex = segmentIds.indexOf(over.id as string);
+      const activeIndex = day.spotIds.indexOf(active.id as string);
+      const overIndex = day.spotIds.indexOf(over.id as string);
 
       if (activeIndex !== -1 && overIndex !== -1) {
-        const newOrder = [...segmentIds];
+        const newOrder = [...day.spotIds];
         newOrder.splice(activeIndex, 1);
         newOrder.splice(overIndex, 0, active.id as string);
-        reorderSegments(day.id, newOrder);
+        reorderDaySpots(day.id, newOrder);
         break;
       }
     }

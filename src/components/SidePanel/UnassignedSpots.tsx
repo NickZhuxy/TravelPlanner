@@ -7,7 +7,7 @@ export default function UnassignedSpots() {
   const { selectedSpotId, selectSpot } = useSelection();
 
   const assignedSpotIds = new Set(
-    trip.days.flatMap((d) => d.segments.flatMap((s) => [s.fromSpotId, s.toSpotId]))
+    trip.days.flatMap((d) => d.spotIds)
   );
 
   const unassigned = trip.spots.filter((s) => !assignedSpotIds.has(s.id));

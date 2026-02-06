@@ -1,13 +1,13 @@
 .card {
   position: absolute;
-  bottom: 24px;
-  left: 24px;
+  bottom: var(--sp-6);
+  left: var(--sp-6);
   z-index: 1000;
   width: 320px;
-  background: #1e1e34;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--edge);
+  color: var(--ink);
   overflow: hidden;
 }
 
@@ -15,139 +15,139 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px 10px;
-  border-bottom: 1px solid #2d2d44;
+  padding: var(--sp-3) var(--sp-4) var(--sp-3);
+  border-bottom: 1px solid var(--edge-subtle);
 }
 
 .nameInput {
   flex: 1;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 4px;
-  color: #e0e0e0;
-  padding: 4px 6px;
-  margin-right: 8px;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  padding: var(--sp-1) var(--sp-2);
+  margin-right: var(--sp-2);
   outline: none;
+  letter-spacing: -0.01em;
+  transition: all var(--ease-fast);
 }
 
 .nameInput:hover {
-  border-color: #444;
+  border-color: var(--edge-strong);
 }
 
 .nameInput:focus {
-  border-color: #4285F4;
-  background: #2d2d44;
+  border-color: var(--edge-focus);
+  background: var(--surface-2);
 }
 
 .closeBtn {
   background: none;
   border: none;
-  color: #888;
+  color: var(--ink-muted);
   cursor: pointer;
-  font-size: 18px;
-  padding: 2px 6px;
+  font-size: var(--text-lg);
+  padding: 2px var(--sp-2);
   line-height: 1;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
+  transition: all var(--ease-fast);
 }
 
 .closeBtn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+  background: var(--surface-2);
 }
 
 .body {
-  padding: 12px 16px;
+  padding: var(--sp-3) var(--sp-4);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--sp-3);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--sp-1);
 }
 
 .label {
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
-  color: #888;
-  letter-spacing: 0.5px;
+  color: var(--ink-muted);
+  letter-spacing: 0.05em;
+  font-weight: var(--weight-medium);
 }
 
 .input {
-  padding: 6px 8px;
-  background: #2d2d44;
-  border: 1px solid #3a3a52;
-  border-radius: 4px;
-  color: #e0e0e0;
-  font-size: 13px;
+  padding: var(--sp-2);
+  background: var(--surface-0);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: var(--text-sm);
   outline: none;
+  transition: border-color var(--ease-fast);
 }
 
 .input:focus {
-  border-color: #4285F4;
+  border-color: var(--edge-focus);
+}
+
+.input::placeholder {
+  color: var(--ink-faint);
 }
 
 .textarea {
-  padding: 6px 8px;
-  background: #2d2d44;
-  border: 1px solid #3a3a52;
-  border-radius: 4px;
-  color: #e0e0e0;
-  font-size: 13px;
+  padding: var(--sp-2);
+  background: var(--surface-0);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: var(--text-sm);
   resize: vertical;
   outline: none;
   font-family: inherit;
+  transition: border-color var(--ease-fast);
 }
 
 .textarea:focus {
-  border-color: #4285F4;
+  border-color: var(--edge-focus);
+}
+
+.textarea::placeholder {
+  color: var(--ink-faint);
 }
 
 .coords {
-  font-size: 12px;
-  color: #777;
-  font-family: monospace;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
 }
 
 .actions {
   display: flex;
-  gap: 8px;
-  padding: 10px 16px 14px;
-  border-top: 1px solid #2d2d44;
-}
-
-.routeBtn {
-  flex: 1;
-  padding: 8px 12px;
-  background: #4285F4;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.routeBtn:hover {
-  background: #3b78e7;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--edge-subtle);
 }
 
 .removeBtn {
-  padding: 8px 12px;
+  padding: var(--sp-2) var(--sp-3);
   background: transparent;
-  color: #EA4335;
-  border: 1px solid #EA4335;
-  border-radius: 6px;
+  color: var(--danger);
+  border: 1px solid var(--danger-muted);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: all var(--ease-fast);
 }
 
 .removeBtn:hover {
-  background: rgba(234, 67, 53, 0.1);
+  background: var(--danger-muted);
 }

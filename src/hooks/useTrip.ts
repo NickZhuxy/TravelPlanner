@@ -19,16 +19,18 @@ interface TripState {
 
   // Day actions
   addDay: (label?: string) => Day;
-  updateDay: (id: string, updates: Partial<Omit<Day, 'id' | 'segments'>>) => void;
+  updateDay: (id: string, updates: Partial<Omit<Day, 'id' | 'segments' | 'spotIds'>>) => void;
   removeDay: (id: string) => void;
   reorderDays: (dayIds: string[]) => void;
 
-  // Segment actions
-  addSegment: (dayId: string, segment: Omit<Segment, 'id'>) => Segment;
+  // Spot-in-day actions
+  addSpotToDay: (dayId: string, spotId: string) => void;
+  removeSpotFromDay: (dayId: string, spotId: string) => void;
+  reorderDaySpots: (dayId: string, spotIds: string[]) => void;
+
+  // Segment actions (auto-managed by useDayRoutes)
+  setDaySegments: (dayId: string, segments: Segment[]) => void;
   updateSegment: (dayId: string, segmentId: string, updates: Partial<Omit<Segment, 'id'>>) => void;
-  removeSegment: (dayId: string, segmentId: string) => void;
-  moveSegment: (fromDayId: string, toDayId: string, segmentId: string, newIndex: number) => void;
-  reorderSegments: (dayId: string, segmentIds: string[]) => void;
 }
 
 function createEmptyTrip(): Trip {
@@ -87,6 +89,7 @@ export const useTrip = create<TripState>((set, get) => {
           spots: s.trip.spots.filter((sp) => sp.id !== id),
           days: s.trip.days.map((d) => ({
             ...d,
+            spotIds: d.spotIds.filter((sid) => sid !== id),
             segments: d.segments.filter((seg) => seg.fromSpotId !== id && seg.toSpotId !== id),
           })),
         },
@@ -100,6 +103,7 @@ export const useTrip = create<TripState>((set, get) => {
         id: generateId(),
         label: label ?? `Day ${days.length + 1}`,
         color: getDayColor(days.length),
+        spotIds: [],
         segments: [],
       };
       set((s) => ({ trip: { ...s.trip, days: [...s.trip.days, day] } }));
@@ -133,18 +137,62 @@ export const useTrip = create<TripState>((set, get) => {
       persist();
     },
 
-    addSegment: (dayId, segmentData) => {
-      const segment: Segment = { id: generateId(), ...segmentData };
+    addSpotToDay: (dayId, spotId) => {
       set((s) => ({
         trip: {
           ...s.trip,
           days: s.trip.days.map((d) =>
-            d.id === dayId ? { ...d, segments: [...d.segments, segment] } : d
+            d.id === dayId && !d.spotIds.includes(spotId)
+              ? { ...d, spotIds: [...d.spotIds, spotId] }
+              : d
           ),
         },
       }));
       persist();
-      return segment;
+    },
+
+    removeSpotFromDay: (dayId, spotId) => {
+      set((s) => ({
+        trip: {
+          ...s.trip,
+          days: s.trip.days.map((d) =>
+            d.id === dayId
+              ? {
+                  ...d,
+                  spotIds: d.spotIds.filter((sid) => sid !== spotId),
+                  segments: d.segments.filter(
+                    (seg) => seg.fromSpotId !== spotId && seg.toSpotId !== spotId
+                  ),
+                }
+              : d
+          ),
+        },
+      }));
+      persist();
+    },
+
+    reorderDaySpots: (dayId, spotIds) => {
+      set((s) => ({
+        trip: {
+          ...s.trip,
+          days: s.trip.days.map((d) =>
+            d.id === dayId ? { ...d, spotIds } : d
+          ),
+        },
+      }));
+      persist();
+    },
+
+    setDaySegments: (dayId, segments) => {
+      set((s) => ({
+        trip: {
+          ...s.trip,
+          days: s.trip.days.map((d) =>
+            d.id === dayId ? { ...d, segments } : d
+          ),
+        },
+      }));
+      persist();
     },
 
     updateSegment: (dayId, segmentId, updates) => {
@@ -161,62 +209,6 @@ export const useTrip = create<TripState>((set, get) => {
                 }
               : d
           ),
-        },
-      }));
-      persist();
-    },
-
-    removeSegment: (dayId, segmentId) => {
-      set((s) => ({
-        trip: {
-          ...s.trip,
-          days: s.trip.days.map((d) =>
-            d.id === dayId
-              ? { ...d, segments: d.segments.filter((seg) => seg.id !== segmentId) }
-              : d
-          ),
-        },
-      }));
-      persist();
-    },
-
-    moveSegment: (fromDayId, toDayId, segmentId, newIndex) => {
-      set((s) => {
-        const fromDay = s.trip.days.find((d) => d.id === fromDayId);
-        if (!fromDay) return s;
-        const segment = fromDay.segments.find((seg) => seg.id === segmentId);
-        if (!segment) return s;
-
-        return {
-          trip: {
-            ...s.trip,
-            days: s.trip.days.map((d) => {
-              if (d.id === fromDayId) {
-                return { ...d, segments: d.segments.filter((seg) => seg.id !== segmentId) };
-              }
-              if (d.id === toDayId) {
-                const segs = [...d.segments];
-                segs.splice(newIndex, 0, segment);
-                return { ...d, segments: segs };
-              }
-              return d;
-            }),
-          },
-        };
-      });
-      persist();
-    },
-
-    reorderSegments: (dayId, segmentIds) => {
-      set((s) => ({
-        trip: {
-          ...s.trip,
-          days: s.trip.days.map((d) => {
-            if (d.id !== dayId) return d;
-            const segMap = new Map(d.segments.map((seg) => [seg.id, seg]));
-            const reordered = segmentIds.map((id) => segMap.get(id)!).filter(Boolean);
-            return { ...d, segments: reordered };
-          }),
         },
       }));
       persist();

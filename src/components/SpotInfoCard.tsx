@@ -5,10 +5,9 @@ import styles from './SpotInfoCard.module.css';
 interface SpotInfoCardProps {
   spot: Spot;
   onClose: () => void;
-  onStartRoute: (spotId: string) => void;
 }
 
-export default function SpotInfoCard({ spot, onClose, onStartRoute }: SpotInfoCardProps) {
+export default function SpotInfoCard({ spot, onClose }: SpotInfoCardProps) {
   const { updateSpot, removeSpot } = useTrip();
 
   return (
@@ -48,12 +47,6 @@ export default function SpotInfoCard({ spot, onClose, onStartRoute }: SpotInfoCa
         </span>
       </div>
       <div className={styles.actions}>
-        <button
-          className={styles.routeBtn}
-          onClick={() => onStartRoute(spot.id)}
-        >
-          Create Route
-        </button>
         <button
           className={styles.removeBtn}
           onClick={() => {

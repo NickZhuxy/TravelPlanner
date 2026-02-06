@@ -9,7 +9,7 @@ interface SegmentDetailProps {
 }
 
 export default function SegmentDetail({ segment, day }: SegmentDetailProps) {
-  const { updateSegment, removeSegment } = useTrip();
+  const { updateSegment } = useTrip();
   const dayId = day.id;
 
   const effectiveColor = getSegmentColor(segment, day);
@@ -72,9 +72,6 @@ export default function SegmentDetail({ segment, day }: SegmentDetailProps) {
           </button>
         )}
       </label>
-      <button className={styles.deleteBtn} onClick={() => removeSegment(dayId, segment.id)}>
-        Remove Segment
-      </button>
     </div>
   );
 }

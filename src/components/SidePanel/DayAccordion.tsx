@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import type { Day } from '../../types';
+import type { Day, Segment } from '../../types';
 import { useTrip } from '../../hooks/useTrip';
-import SegmentItem from './SegmentItem';
+import DaySpotItem from './DaySpotItem';
+import TransportLeg from './TransportLeg';
 import styles from './DayAccordion.module.css';
 
 interface DayAccordionProps {
@@ -11,8 +12,17 @@ interface DayAccordionProps {
 
 export default function DayAccordion({ day }: DayAccordionProps) {
   const [expanded, setExpanded] = useState(true);
-  const { updateDay, removeDay } = useTrip();
+  const { trip, updateDay, removeDay } = useTrip();
   const [editing, setEditing] = useState(false);
+
+  // Build segment lookup by "fromId:toId"
+  const segmentMap = new Map<string, Segment>();
+  for (const seg of day.segments) {
+    segmentMap.set(`${seg.fromSpotId}:${seg.toSpotId}`, seg);
+  }
+
+  // Resolve spots from spotIds
+  const spotMap = new Map(trip.spots.map((s) => [s.id, s]));
 
   return (
     <div className={styles.accordion}>
@@ -39,6 +49,7 @@ export default function DayAccordion({ day }: DayAccordionProps) {
             {day.label}
           </span>
         )}
+        <span className={styles.count}>{day.spotIds.length}</span>
         <span className={styles.chevron}>{expanded ? '\u25BE' : '\u25B8'}</span>
         <button
           className={styles.removeBtn}
@@ -52,13 +63,37 @@ export default function DayAccordion({ day }: DayAccordionProps) {
       </div>
       {expanded && (
         <div className={styles.body}>
-          {day.segments.length === 0 ? (
-            <div className={styles.empty}>No segments yet</div>
+          {day.spotIds.length === 0 ? (
+            <div className={styles.empty}>No spots yet — add from search or map</div>
           ) : (
-            <SortableContext items={day.segments.map((s) => s.id)} strategy={verticalListSortingStrategy}>
-              {day.segments.map((seg) => (
-                <SegmentItem key={seg.id} segment={seg} dayId={day.id} color={day.color} />
-              ))}
+            <SortableContext items={day.spotIds} strategy={verticalListSortingStrategy}>
+              {day.spotIds.map((spotId, idx) => {
+                const spot = spotMap.get(spotId);
+                if (!spot) return null;
+
+                const elements = [
+                  <DaySpotItem
+                    key={spotId}
+                    spot={spot}
+                    index={idx}
+                    dayColor={day.color}
+                    dayId={day.id}
+                  />,
+                ];
+
+                // Add transport leg between consecutive spots
+                if (idx < day.spotIds.length - 1) {
+                  const nextSpotId = day.spotIds[idx + 1];
+                  const seg = segmentMap.get(`${spotId}:${nextSpotId}`);
+                  if (seg) {
+                    elements.push(
+                      <TransportLeg key={`leg-${seg.id}`} segment={seg} dayId={day.id} />
+                    );
+                  }
+                }
+
+                return elements;
+              })}
             </SortableContext>
           )}
         </div>
