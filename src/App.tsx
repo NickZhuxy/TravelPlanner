@@ -4,15 +4,20 @@ import Toolbar from './components/Toolbar';
 import SidePanel from './components/SidePanel/SidePanel';
 import DetailBar from './components/DetailBar/DetailBar';
 import SearchBar from './components/SearchBar';
+import DayPickerModal from './components/DayPickerModal';
 import LeafletMap from './map/LeafletMap';
 import { useTrip } from './hooks/useTrip';
 import { useSelection } from './hooks/useSelection';
+import { useSegmentCreation } from './hooks/useSegmentCreation';
+import { useRouting } from './hooks/useRouting';
 import { getSegmentColor, getSegmentWidth } from './utils/colors';
 import type { Spot, SearchResult } from './types';
 
 function App() {
-  const { trip, addSpot } = useTrip();
+  const { trip, addSpot, addDay } = useTrip();
   const { selectedSpotId, selectedSegmentId, selectSpot, selectSegment } = useSelection();
+  const segmentCreation = useSegmentCreation();
+  const routing = useRouting();
   const [tempMarkers, setTempMarkers] = useState<SearchResult[]>([]);
 
   const markers = trip.spots.map((spot) => ({
@@ -61,7 +66,28 @@ function App() {
       }
       return;
     }
-    selectSpot(spot.id);
+    // Segment creation flow
+    if (!segmentCreation.firstSpotId) {
+      segmentCreation.startCreation(spot.id);
+      selectSpot(spot.id);
+    } else if (spot.id !== segmentCreation.firstSpotId) {
+      segmentCreation.setSecondSpot(spot.id);
+    }
+  };
+
+  const handleDaySelect = async (dayId: string) => {
+    const { firstSpotId, secondSpotId } = segmentCreation;
+    if (!firstSpotId || !secondSpotId) return;
+    const fromSpot = trip.spots.find((s) => s.id === firstSpotId);
+    const toSpot = trip.spots.find((s) => s.id === secondSpotId);
+    if (!fromSpot || !toSpot) return;
+    await routing.createSegment(dayId, firstSpotId, secondSpotId, fromSpot.coordinates, toSpot.coordinates);
+    segmentCreation.reset();
+  };
+
+  const handleCreateDayAndSegment = async () => {
+    const newDay = addDay();
+    await handleDaySelect(newDay.id);
   };
 
   const handleRouteClick = (segmentId: string) => {
@@ -87,6 +113,13 @@ function App() {
         </div>
       </div>
       <DetailBar />
+      {segmentCreation.isPickingDay && (
+        <DayPickerModal
+          onSelectDay={handleDaySelect}
+          onCreateDay={handleCreateDayAndSegment}
+          onCancel={() => segmentCreation.cancel()}
+        />
+      )}
     </div>
   );
 }
