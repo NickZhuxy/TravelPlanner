@@ -1,21 +1,31 @@
+import { useState } from 'react';
 import styles from './App.module.css';
 import Toolbar from './components/Toolbar';
 import SidePanel from './components/SidePanel/SidePanel';
 import DetailBar from './components/DetailBar/DetailBar';
+import SearchBar from './components/SearchBar';
 import LeafletMap from './map/LeafletMap';
 import { useTrip } from './hooks/useTrip';
 import { useSelection } from './hooks/useSelection';
 import { getSegmentColor, getSegmentWidth } from './utils/colors';
-import type { Spot } from './types';
+import type { Spot, SearchResult } from './types';
 
 function App() {
-  const { trip } = useTrip();
+  const { trip, addSpot } = useTrip();
   const { selectedSpotId, selectedSegmentId, selectSpot, selectSegment } = useSelection();
+  const [tempMarkers, setTempMarkers] = useState<SearchResult[]>([]);
 
   const markers = trip.spots.map((spot) => ({
     spot,
     isSelected: spot.id === selectedSpotId,
   }));
+
+  const tempSpots = tempMarkers.map((t, i) => ({
+    spot: { id: `temp-${i}`, name: t.name, coordinates: t.coordinates } as Spot,
+    isTemporary: true,
+  }));
+
+  const allMarkers = [...markers, ...tempSpots];
 
   const routes = trip.days.flatMap((day) =>
     day.segments
@@ -31,7 +41,26 @@ function App() {
       }))
   );
 
+  const handleSearchResult = (result: SearchResult) => {
+    setTempMarkers((prev) => [...prev, result]);
+  };
+
   const handleMarkerClick = (spot: Spot) => {
+    // Check if it's a temporary marker
+    if (spot.id.startsWith('temp-')) {
+      const temp = tempMarkers.find(
+        (t) => t.coordinates[0] === spot.coordinates[0] && t.coordinates[1] === spot.coordinates[1]
+      );
+      if (temp) {
+        const newSpot = addSpot({
+          name: temp.name,
+          coordinates: temp.coordinates,
+        });
+        selectSpot(newSpot.id);
+        setTempMarkers((prev) => prev.filter((t) => t !== temp));
+      }
+      return;
+    }
     selectSpot(spot.id);
   };
 
@@ -48,8 +77,9 @@ function App() {
       <div className={styles.main}>
         <SidePanel />
         <div className={styles.mapArea}>
+          <SearchBar onResultSelect={handleSearchResult} />
           <LeafletMap
-            markers={markers}
+            markers={allMarkers}
             routes={routes}
             onMarkerClick={handleMarkerClick}
             onRouteClick={handleRouteClick}
