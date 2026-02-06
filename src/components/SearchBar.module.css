@@ -1,7 +1,7 @@
 .container {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: var(--sp-3);
+  right: var(--sp-3);
   z-index: 1000;
   width: 320px;
 }
@@ -14,17 +14,23 @@
 
 .input {
   width: 100%;
-  padding: 10px 36px 10px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #fff;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: var(--sp-3) var(--sp-8) var(--sp-3) var(--sp-3);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: var(--text-base);
   outline: none;
+  transition: all var(--ease-fast);
+}
+
+.input::placeholder {
+  color: var(--ink-faint);
 }
 
 .input:focus {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  border-color: var(--edge-focus);
+  background: var(--surface-3);
 }
 
 .spinner {
@@ -32,37 +38,43 @@
   right: 10px;
   width: 16px;
   height: 16px;
-  border: 2px solid #ddd;
-  border-top-color: #4285F4;
+  border: 2px solid var(--edge-strong);
+  border-top-color: var(--amber);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
 
 .clear {
   position: absolute;
-  right: 8px;
+  right: var(--sp-2);
   background: none;
   border: none;
-  color: #999;
+  color: var(--ink-muted);
   cursor: pointer;
-  font-size: 14px;
-  padding: 2px 4px;
+  font-size: var(--text-base);
+  padding: 2px var(--sp-1);
+  transition: color var(--ease-fast);
+}
+
+.clear:hover {
+  color: var(--ink);
 }
 
 .results {
   list-style: none;
-  margin-top: 4px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin-top: var(--sp-1);
+  background: var(--surface-3);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
   max-height: 300px;
   overflow-y: auto;
 }
 
 .resultItem {
-  padding: 10px 12px;
+  padding: var(--sp-3) var(--sp-3);
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--edge-subtle);
+  transition: background var(--ease-fast);
 }
 
 .resultItem:last-child {
@@ -70,20 +82,20 @@
 }
 
 .resultItem:hover {
-  background: #f5f7fa;
+  background: var(--surface-2);
 }
 
 .resultName {
   display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #222;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
 }
 
 .resultDetail {
   display: block;
-  font-size: 12px;
-  color: #888;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;

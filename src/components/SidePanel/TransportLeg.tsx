@@ -58,8 +58,10 @@ export default function TransportLeg({ segment, dayId }: TransportLegProps) {
         <span className={styles.info}>
           {loading
             ? 'Loading...'
-            : segment.duration != null && segment.distance != null
-              ? `${formatDuration(segment.duration)} · ${formatDistance(segment.distance)}`
+            : segment.distance != null
+              ? segment.mode === 'walk'
+                ? formatDistance(segment.distance)
+                : `${formatDuration(segment.duration!)} · ${formatDistance(segment.distance)}`
               : '—'}
         </span>
       </div>

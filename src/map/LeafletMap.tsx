@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './markerStyles.css';
 import styles from './LeafletMap.module.css';
-import { createNormalIcon, createTemporaryIcon, createSelectedIcon } from './customMarkers';
+import { createNormalIcon, createTemporaryIcon, createSelectedIcon, createStayIcon } from './customMarkers';
 import AddSpotPopup from '../components/AddSpotPopup';
 import type { Spot, Day } from '../types';
 import type { ReactNode } from 'react';
@@ -12,6 +12,7 @@ import type { ReactNode } from 'react';
 interface MapMarker {
   spot: Spot;
   isSelected?: boolean;
+  isStay?: boolean;
 }
 
 interface MapRoute {
@@ -148,6 +149,7 @@ export default function LeafletMap({
 
   const normalIcon = useMemo(() => createNormalIcon(normalSize), [normalSize]);
   const selectedIcon = useMemo(() => createSelectedIcon(selectedSize), [selectedSize]);
+  const stayIcon = useMemo(() => createStayIcon(normalSize), [normalSize]);
 
   return (
     <MapContainer center={center} zoom={zoom} className={styles.map}>
@@ -163,7 +165,7 @@ export default function LeafletMap({
         <Marker
           key={m.spot.id}
           position={m.spot.coordinates}
-          icon={m.isSelected ? selectedIcon : normalIcon}
+          icon={m.isSelected ? selectedIcon : m.isStay ? stayIcon : normalIcon}
           eventHandlers={{
             click: () => onMarkerClick?.(m.spot),
           }}

@@ -23,6 +23,7 @@ export default function DayAccordion({ day }: DayAccordionProps) {
 
   // Resolve spots from spotIds
   const spotMap = new Map(trip.spots.map((s) => [s.id, s]));
+  const effectiveStayId = day.staySpotId ?? day.spotIds[day.spotIds.length - 1];
 
   return (
     <div className={styles.accordion}>
@@ -78,6 +79,7 @@ export default function DayAccordion({ day }: DayAccordionProps) {
                     index={idx}
                     dayColor={day.color}
                     dayId={day.id}
+                    isStay={spot.id === effectiveStayId}
                   />,
                 ];
 

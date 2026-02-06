@@ -7,11 +7,11 @@
 /* Popup style overrides */
 .map :global(.leaflet-popup-content-wrapper) {
   padding: 0;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .map :global(.leaflet-popup-content) {
-  margin: 12px 14px;
+  margin: var(--sp-3) var(--sp-3);
   min-width: 200px;
 }

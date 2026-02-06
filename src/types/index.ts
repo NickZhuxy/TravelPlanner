@@ -30,6 +30,7 @@ export interface Day {
   color: string;
   spotIds: string[]; // ordered spot IDs — source of truth for itinerary
   segments: Segment[];
+  staySpotId?: string; // spot where the user stays overnight
 }
 
 export interface Trip {

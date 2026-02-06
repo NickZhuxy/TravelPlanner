@@ -31,6 +31,9 @@ interface TripState {
   // Segment actions (auto-managed by useDayRoutes)
   setDaySegments: (dayId: string, segments: Segment[]) => void;
   updateSegment: (dayId: string, segmentId: string, updates: Partial<Omit<Segment, 'id'>>) => void;
+
+  // Stay sync (auto-managed by useStaySync)
+  syncStayStarts: () => void;
 }
 
 function createEmptyTrip(): Trip {
@@ -91,6 +94,7 @@ export const useTrip = create<TripState>((set, get) => {
             ...d,
             spotIds: d.spotIds.filter((sid) => sid !== id),
             segments: d.segments.filter((seg) => seg.fromSpotId !== id && seg.toSpotId !== id),
+            staySpotId: d.staySpotId === id ? undefined : d.staySpotId,
           })),
         },
       }));
@@ -163,6 +167,7 @@ export const useTrip = create<TripState>((set, get) => {
                   segments: d.segments.filter(
                     (seg) => seg.fromSpotId !== spotId && seg.toSpotId !== spotId
                   ),
+                  staySpotId: d.staySpotId === spotId ? undefined : d.staySpotId,
                 }
               : d
           ),
@@ -211,6 +216,34 @@ export const useTrip = create<TripState>((set, get) => {
           ),
         },
       }));
+      persist();
+    },
+
+    syncStayStarts: () => {
+      const s = get();
+      const days = s.trip.days;
+      const newDays = [...days];
+      let changed = false;
+
+      for (let i = 0; i < newDays.length - 1; i++) {
+        const currentDay = newDays[i];
+        if (currentDay.spotIds.length === 0) continue;
+
+        const staySpotId =
+          currentDay.staySpotId ?? currentDay.spotIds[currentDay.spotIds.length - 1];
+        if (!staySpotId) continue;
+
+        const nextDay = newDays[i + 1];
+        if (nextDay.spotIds.length === 0) continue;
+        if (nextDay.spotIds[0] === staySpotId) continue;
+
+        const filtered = nextDay.spotIds.filter((id) => id !== staySpotId);
+        newDays[i + 1] = { ...nextDay, spotIds: [staySpotId, ...filtered] };
+        changed = true;
+      }
+
+      if (!changed) return;
+      set({ trip: { ...s.trip, days: newDays } });
       persist();
     },
   };

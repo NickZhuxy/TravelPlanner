@@ -8,6 +8,7 @@ import LeafletMap from './map/LeafletMap';
 import { useTrip } from './hooks/useTrip';
 import { useSelection } from './hooks/useSelection';
 import { useDayRoutes } from './hooks/useDayRoutes';
+import { useStaySync } from './hooks/useStaySync';
 import { getSegmentColor, getSegmentWidth } from './utils/colors';
 import type { Spot, SearchResult } from './types';
 
@@ -19,10 +20,20 @@ function App() {
 
   // Auto-sync segments for all days
   useDayRoutes();
+  // Auto-sync stay-spot → next-day first spot
+  useStaySync();
+
+  // Collect all effective stay spot IDs across days
+  const staySpotIds = new Set(
+    trip.days
+      .filter((d) => d.spotIds.length > 0)
+      .map((d) => d.staySpotId ?? d.spotIds[d.spotIds.length - 1])
+  );
 
   const markers = trip.spots.map((spot) => ({
     spot,
     isSelected: spot.id === selectedSpotId,
+    isStay: staySpotIds.has(spot.id),
   }));
 
   const routes = trip.days.flatMap((day) =>

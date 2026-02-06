@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { Spot } from '../../types';
+import { useTrip } from '../../hooks/useTrip';
 import { useSelection } from '../../hooks/useSelection';
 import styles from './DaySpotItem.module.css';
 
@@ -9,9 +10,11 @@ interface DaySpotItemProps {
   index: number;
   dayColor: string;
   dayId: string;
+  isStay: boolean;
 }
 
-export default function DaySpotItem({ spot, index, dayColor, dayId }: DaySpotItemProps) {
+export default function DaySpotItem({ spot, index, dayColor, dayId, isStay }: DaySpotItemProps) {
+  const { removeSpotFromDay, updateDay } = useTrip();
   const { selectedSpotId, selectSpot } = useSelection();
   const isSelected = selectedSpotId === spot.id;
 
@@ -37,6 +40,26 @@ export default function DaySpotItem({ spot, index, dayColor, dayId }: DaySpotIte
       <span className={styles.index}>{index + 1}</span>
       <span className={styles.colorDot} style={{ background: dayColor }} />
       <span className={styles.name}>{spot.name}</span>
+      <button
+        className={`${styles.stayBtn} ${isStay ? styles.stayActive : ''}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          updateDay(dayId, { staySpotId: isStay ? undefined : spot.id });
+        }}
+        title={isStay ? 'Clear stay' : 'Set as overnight stay'}
+      >
+        &#9789;
+      </button>
+      <button
+        className={styles.removeBtn}
+        onClick={(e) => {
+          e.stopPropagation();
+          removeSpotFromDay(dayId, spot.id);
+        }}
+        title="Remove from day"
+      >
+        &times;
+      </button>
     </div>
   );
 }

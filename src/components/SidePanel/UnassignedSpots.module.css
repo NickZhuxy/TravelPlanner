@@ -1,29 +1,33 @@
 .section {
-  margin-top: 12px;
-  border-top: 1px solid #333;
-  padding-top: 8px;
+  margin-top: var(--sp-3);
+  border-top: 1px solid var(--edge);
+  padding-top: var(--sp-2);
 }
 
 .header {
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
-  color: #888;
-  padding: 4px 12px;
-  letter-spacing: 0.5px;
+  color: var(--ink-muted);
+  padding: var(--sp-1) var(--sp-3);
+  letter-spacing: 0.05em;
+  font-weight: var(--weight-medium);
 }
 
 .item {
-  padding: 6px 12px;
-  font-size: 13px;
-  color: #ccc;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-sm);
+  color: var(--ink-secondary);
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
+  transition: all var(--ease-fast);
 }
 
 .item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-1);
+  color: var(--ink);
 }
 
 .item.selected {
-  background: rgba(66, 133, 244, 0.2);
+  background: var(--amber-muted);
+  color: var(--ink);
 }

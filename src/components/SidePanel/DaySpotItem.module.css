@@ -42,7 +42,57 @@
 }
 
 .name {
+  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.stayBtn {
+  background: none;
+  border: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: var(--text-base);
+  padding: 0 var(--sp-1);
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: all var(--ease-fast);
+}
+
+.item:hover .stayBtn {
+  opacity: 1;
+}
+
+.stayBtn:hover {
+  color: var(--amber);
+}
+
+.stayBtn.stayActive {
+  opacity: 1;
+  color: var(--amber);
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: var(--text-base);
+  padding: 0 var(--sp-1);
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: all var(--ease-fast);
+}
+
+.item:hover .removeBtn {
+  opacity: 1;
+}
+
+.removeBtn:hover {
+  color: var(--danger);
 }

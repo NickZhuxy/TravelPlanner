@@ -2,44 +2,53 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
-  background: #1a1a2e;
-  color: #fff;
-  border-bottom: 1px solid #333;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--surface-0);
+  color: var(--ink);
+  border-bottom: 1px solid var(--edge);
   flex-shrink: 0;
 }
 
 .tripName {
   background: transparent;
   border: 1px solid transparent;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 4px;
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  letter-spacing: -0.01em;
+  transition: border-color var(--ease-fast);
 }
 
-.tripName:hover,
+.tripName:hover {
+  border-color: var(--edge-strong);
+}
+
 .tripName:focus {
-  border-color: #555;
+  border-color: var(--edge-focus);
   outline: none;
 }
 
 .actions {
   display: flex;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .actions button {
-  padding: 6px 14px;
-  background: #2d2d44;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 4px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface-1);
+  color: var(--ink-secondary);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: all var(--ease-fast);
 }
 
 .actions button:hover {
-  background: #3d3d5c;
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--edge-strong);
 }
