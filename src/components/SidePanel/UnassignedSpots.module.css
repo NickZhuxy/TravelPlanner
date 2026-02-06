@@ -1,0 +1,29 @@
+.section {
+  margin-top: 12px;
+  border-top: 1px solid #333;
+  padding-top: 8px;
+}
+
+.header {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  padding: 4px 12px;
+  letter-spacing: 0.5px;
+}
+
+.item {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.item.selected {
+  background: rgba(66, 133, 244, 0.2);
+}
