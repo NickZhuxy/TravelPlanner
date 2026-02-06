@@ -17,17 +17,17 @@
 
 .addDay {
   padding: var(--sp-3);
-  background: var(--surface-1);
-  color: var(--ink-muted);
+  background: var(--amber);
+  color: #fff;
   border: none;
-  border-top: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
+  margin: var(--sp-2) var(--sp-3) var(--sp-3);
   cursor: pointer;
   font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
   transition: all var(--ease-fast);
 }
 
 .addDay:hover {
-  background: var(--surface-2);
-  color: var(--amber);
+  background: var(--amber-hover);
 }
