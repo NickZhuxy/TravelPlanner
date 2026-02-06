@@ -32,8 +32,13 @@ interface TripState {
   setDaySegments: (dayId: string, segments: Segment[]) => void;
   updateSegment: (dayId: string, segmentId: string, updates: Partial<Omit<Segment, 'id'>>) => void;
 
-  // Stay sync (auto-managed by useStaySync)
-  syncStayStarts: () => void;
+  // Cross-container DnD
+  moveSpotToDay: (
+    spotId: string,
+    fromDayId: string | null,
+    toDayId: string | null,
+    insertIndex: number,
+  ) => void;
 }
 
 function createEmptyTrip(): Trip {
@@ -103,11 +108,13 @@ export const useTrip = create<TripState>((set, get) => {
 
     addDay: (label) => {
       const days = get().trip.days;
+      const lastDay = days[days.length - 1];
+      const inheritedSpotId = lastDay?.spotIds[lastDay.spotIds.length - 1];
       const day: Day = {
         id: generateId(),
         label: label ?? `Day ${days.length + 1}`,
         color: getDayColor(days.length),
-        spotIds: [],
+        spotIds: inheritedSpotId ? [inheritedSpotId] : [],
         segments: [],
       };
       set((s) => ({ trip: { ...s.trip, days: [...s.trip.days, day] } }));
@@ -126,9 +133,19 @@ export const useTrip = create<TripState>((set, get) => {
     },
 
     removeDay: (id) => {
-      set((s) => ({
-        trip: { ...s.trip, days: s.trip.days.filter((d) => d.id !== id) },
-      }));
+      set((s) => {
+        const remaining = s.trip.days.filter((d) => d.id !== id);
+        // Renumber days that follow the "Day N" pattern
+        let dayNum = 1;
+        const relabeled = remaining.map((d) => {
+          if (/^Day \d+$/.test(d.label)) {
+            return { ...d, label: `Day ${dayNum++}` };
+          }
+          dayNum++;
+          return d;
+        });
+        return { trip: { ...s.trip, days: relabeled } };
+      });
       persist();
     },
 
@@ -219,32 +236,41 @@ export const useTrip = create<TripState>((set, get) => {
       persist();
     },
 
-    syncStayStarts: () => {
-      const s = get();
-      const days = s.trip.days;
-      const newDays = [...days];
-      let changed = false;
+    moveSpotToDay: (spotId, fromDayId, toDayId, insertIndex) => {
+      set((s) => {
+        let days = s.trip.days;
 
-      for (let i = 0; i < newDays.length - 1; i++) {
-        const currentDay = newDays[i];
-        if (currentDay.spotIds.length === 0) continue;
+        // Remove from source day
+        if (fromDayId) {
+          days = days.map((d) =>
+            d.id === fromDayId
+              ? {
+                  ...d,
+                  spotIds: d.spotIds.filter((sid) => sid !== spotId),
+                  segments: d.segments.filter(
+                    (seg) => seg.fromSpotId !== spotId && seg.toSpotId !== spotId
+                  ),
+                  staySpotId: d.staySpotId === spotId ? undefined : d.staySpotId,
+                }
+              : d
+          );
+        }
 
-        const staySpotId =
-          currentDay.staySpotId ?? currentDay.spotIds[currentDay.spotIds.length - 1];
-        if (!staySpotId) continue;
+        // Insert into target day
+        if (toDayId) {
+          days = days.map((d) => {
+            if (d.id !== toDayId) return d;
+            if (d.spotIds.includes(spotId)) return d;
+            const newSpotIds = [...d.spotIds];
+            newSpotIds.splice(Math.min(insertIndex, newSpotIds.length), 0, spotId);
+            return { ...d, spotIds: newSpotIds };
+          });
+        }
 
-        const nextDay = newDays[i + 1];
-        if (nextDay.spotIds.length === 0) continue;
-        if (nextDay.spotIds[0] === staySpotId) continue;
-
-        const filtered = nextDay.spotIds.filter((id) => id !== staySpotId);
-        newDays[i + 1] = { ...nextDay, spotIds: [staySpotId, ...filtered] };
-        changed = true;
-      }
-
-      if (!changed) return;
-      set({ trip: { ...s.trip, days: newDays } });
+        return { trip: { ...s.trip, days } };
+      });
       persist();
     },
+
   };
 });

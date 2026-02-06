@@ -81,6 +81,11 @@
   background: var(--canvas);
 }
 
+.dropTarget {
+  outline: 2px dashed var(--amber);
+  outline-offset: -2px;
+}
+
 .empty {
   padding: var(--sp-2) var(--sp-5);
   font-size: var(--text-xs);

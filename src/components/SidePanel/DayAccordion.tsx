@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { Day, Segment } from '../../types';
 import { useTrip } from '../../hooks/useTrip';
@@ -15,6 +16,11 @@ export default function DayAccordion({ day }: DayAccordionProps) {
   const { trip, updateDay, removeDay } = useTrip();
   const [editing, setEditing] = useState(false);
 
+  const { setNodeRef: setDropRef, isOver } = useDroppable({
+    id: `day-drop:${day.id}`,
+    disabled: day.spotIds.length > 0,
+  });
+
   // Build segment lookup by "fromId:toId"
   const segmentMap = new Map<string, Segment>();
   for (const seg of day.segments) {
@@ -23,7 +29,7 @@ export default function DayAccordion({ day }: DayAccordionProps) {
 
   // Resolve spots from spotIds
   const spotMap = new Map(trip.spots.map((s) => [s.id, s]));
-  const effectiveStayId = day.staySpotId ?? day.spotIds[day.spotIds.length - 1];
+  const effectiveStayId = day.staySpotId || undefined;
 
   return (
     <div className={styles.accordion}>
@@ -63,11 +69,14 @@ export default function DayAccordion({ day }: DayAccordionProps) {
         </button>
       </div>
       {expanded && (
-        <div className={styles.body}>
+        <div
+          ref={setDropRef}
+          className={`${styles.body} ${isOver ? styles.dropTarget : ''}`}
+        >
           {day.spotIds.length === 0 ? (
-            <div className={styles.empty}>No spots yet — add from search or map</div>
+            <div className={styles.empty}>Drop spots here or add from search</div>
           ) : (
-            <SortableContext items={day.spotIds} strategy={verticalListSortingStrategy}>
+            <SortableContext id={`day-sort:${day.id}`} items={day.spotIds} strategy={verticalListSortingStrategy}>
               {day.spotIds.map((spotId, idx) => {
                 const spot = spotMap.get(spotId);
                 if (!spot) return null;

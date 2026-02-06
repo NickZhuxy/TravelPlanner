@@ -73,6 +73,7 @@
 .stayBtn.stayActive {
   opacity: 1;
   color: var(--amber);
+  background: var(--amber-muted);
 }
 
 .removeBtn {

@@ -31,3 +31,16 @@
   background: var(--amber-muted);
   color: var(--ink);
 }
+
+.dropTarget {
+  outline: 2px dashed var(--amber);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.empty {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  font-style: italic;
+}

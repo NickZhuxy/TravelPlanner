@@ -42,6 +42,7 @@ export default function DaySpotItem({ spot, index, dayColor, dayId, isStay }: Da
       <span className={styles.name}>{spot.name}</span>
       <button
         className={`${styles.stayBtn} ${isStay ? styles.stayActive : ''}`}
+        onPointerDown={(e) => e.stopPropagation()}
         onClick={(e) => {
           e.stopPropagation();
           updateDay(dayId, { staySpotId: isStay ? undefined : spot.id });
@@ -52,6 +53,7 @@ export default function DaySpotItem({ spot, index, dayColor, dayId, isStay }: Da
       </button>
       <button
         className={styles.removeBtn}
+        onPointerDown={(e) => e.stopPropagation()}
         onClick={(e) => {
           e.stopPropagation();
           removeSpotFromDay(dayId, spot.id);
