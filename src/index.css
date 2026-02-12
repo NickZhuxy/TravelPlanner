@@ -1,30 +1,30 @@
 :root {
-  /* ── Surfaces (warm navy-charcoal, whisper-quiet elevation) ── */
-  --canvas: hsl(228, 28%, 8%);        /* the deep background — night sky */
-  --surface-0: hsl(228, 24%, 11%);    /* panels, sidebar — atlas page */
-  --surface-1: hsl(228, 22%, 14%);    /* cards, inputs — slightly lifted */
-  --surface-2: hsl(228, 20%, 17%);    /* hover states, elevated controls */
-  --surface-3: hsl(228, 18%, 21%);    /* dropdowns, overlays — floating */
+  /* ── Surfaces ── */
+  --canvas: hsl(228, 28%, 8%);
+  --surface-0: hsl(228, 24%, 11%);
+  --surface-1: hsl(228, 22%, 14%);
+  --surface-2: hsl(228, 20%, 17%);
+  --surface-3: hsl(228, 18%, 21%);
 
-  /* ── Text (warm off-whites, four-level hierarchy) ── */
-  --ink: hsl(40, 15%, 90%);           /* primary text — warm parchment */
-  --ink-secondary: hsl(40, 10%, 68%); /* supporting text */
-  --ink-muted: hsl(228, 10%, 48%);    /* metadata, timestamps */
-  --ink-faint: hsl(228, 10%, 34%);    /* disabled, placeholder */
+  /* ── Text ── */
+  --ink: hsl(40, 15%, 90%);
+  --ink-secondary: hsl(40, 10%, 68%);
+  --ink-muted: hsl(228, 10%, 48%);
+  --ink-faint: hsl(228, 10%, 34%);
 
-  /* ── Borders (low-opacity, warm-shifted) ── */
-  --edge: hsla(40, 8%, 60%, 0.10);    /* default — barely there */
-  --edge-subtle: hsla(40, 8%, 60%, 0.06); /* softer separation */
-  --edge-strong: hsla(40, 8%, 60%, 0.18); /* emphasis, hover */
-  --edge-focus: hsla(38, 80%, 65%, 0.40); /* focus rings */
+  /* ── Borders ── */
+  --edge: hsla(40, 8%, 60%, 0.08);
+  --edge-subtle: hsla(40, 8%, 60%, 0.05);
+  --edge-strong: hsla(40, 8%, 60%, 0.14);
+  --edge-focus: hsla(38, 80%, 65%, 0.40);
 
   /* ── Accents ── */
-  --amber: hsl(38, 90%, 58%);         /* primary action — lamplight */
+  --amber: hsl(38, 90%, 58%);
   --amber-hover: hsl(38, 90%, 50%);
   --amber-muted: hsla(38, 90%, 58%, 0.15);
-  --teal: hsl(172, 50%, 48%);         /* routes, paths — sea-green */
+  --teal: hsl(172, 50%, 48%);
   --teal-muted: hsla(172, 50%, 48%, 0.15);
-  --route-blue: hsl(215, 70%, 58%);   /* map marker blue */
+  --route-blue: hsl(215, 70%, 58%);
 
   /* ── Semantic ── */
   --success: hsl(152, 50%, 48%);
@@ -33,10 +33,20 @@
   --danger-muted: hsla(4, 60%, 55%, 0.12);
   --danger-hover: hsl(4, 60%, 48%);
 
-  /* ── Radius (3-step: controls / cards / overlays) ── */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* ── Radius (5-step, Apple-rounded) ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  /* ── Shadows (multi-layer, subtle) ── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.10);
+
+  /* ── Vibrancy ── */
+  --blur-vibrancy: blur(20px) saturate(180%);
 
   /* ── Spacing (base 4) ── */
   --sp-1: 4px;
@@ -48,8 +58,8 @@
   --sp-8: 32px;
 
   /* ── Typography ── */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
 
   --text-xs: 11px;
   --text-sm: 13px;
@@ -62,7 +72,34 @@
   --weight-semibold: 600;
 
   /* ── Transitions ── */
-  --ease-fast: 150ms ease-out;
+  --ease-fast: 200ms ease-out;
+}
+
+[data-theme="light"] {
+  --canvas: hsl(220, 12%, 96%);
+  --surface-0: hsl(0, 0%, 100%);
+  --surface-1: hsl(220, 14%, 96%);
+  --surface-2: hsl(220, 12%, 92%);
+  --surface-3: hsl(220, 12%, 88%);
+
+  --ink: hsl(220, 20%, 14%);
+  --ink-secondary: hsl(220, 12%, 38%);
+  --ink-muted: hsl(220, 10%, 54%);
+  --ink-faint: hsl(220, 8%, 72%);
+
+  --edge: hsla(220, 15%, 40%, 0.10);
+  --edge-subtle: hsla(220, 15%, 40%, 0.06);
+  --edge-strong: hsla(220, 15%, 40%, 0.18);
+  --edge-focus: hsla(38, 80%, 50%, 0.50);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+
+  --amber-muted: hsla(38, 90%, 50%, 0.12);
+  --danger-muted: hsla(4, 60%, 50%, 0.10);
+  --teal-muted: hsla(172, 50%, 42%, 0.12);
+  --success-muted: hsla(152, 50%, 42%, 0.12);
 }
 
 *,
@@ -80,9 +117,8 @@ body {
   color: var(--ink);
 }
 
-/* Scrollbar styling for the warm-dark theme */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -91,9 +127,17 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: hsla(40, 8%, 60%, 0.15);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsla(40, 8%, 60%, 0.25);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: hsla(220, 15%, 40%, 0.18);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: hsla(220, 15%, 40%, 0.30);
 }

@@ -9,10 +9,11 @@ import styles from './DayAccordion.module.css';
 
 interface DayAccordionProps {
   day: Day;
+  expanded: boolean;
+  onToggle: () => void;
 }
 
-export default function DayAccordion({ day }: DayAccordionProps) {
-  const [expanded, setExpanded] = useState(true);
+export default function DayAccordion({ day, expanded, onToggle }: DayAccordionProps) {
   const { trip, updateDay, removeDay } = useTrip();
   const [editing, setEditing] = useState(false);
 
@@ -33,7 +34,7 @@ export default function DayAccordion({ day }: DayAccordionProps) {
 
   return (
     <div className={styles.accordion}>
-      <div className={styles.header} onClick={() => setExpanded(!expanded)}>
+      <div className={styles.header} onClick={onToggle}>
         <span className={styles.colorDot} style={{ background: day.color }} />
         {editing ? (
           <input

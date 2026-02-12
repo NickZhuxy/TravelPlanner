@@ -1,18 +1,20 @@
 .panel {
-  width: 280px;
-  min-width: 280px;
+  width: 300px;
+  min-width: 300px;
   background: var(--surface-0);
   color: var(--ink);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--edge);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--sp-2);
+  padding: var(--sp-3);
 }
 
 .addDay {
@@ -20,8 +22,8 @@
   background: var(--amber);
   color: #fff;
   border: none;
-  border-radius: var(--radius-sm);
-  margin: var(--sp-2) var(--sp-3) var(--sp-3);
+  border-radius: var(--radius-md);
+  margin: var(--sp-2) var(--sp-3) var(--sp-4);
   cursor: pointer;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
@@ -30,4 +32,56 @@
 
 .addDay:hover {
   background: var(--amber-hover);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-4);
+  border-bottom: 1px solid var(--edge-subtle);
+  flex-shrink: 0;
+}
+
+.panelTitle {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  font-weight: var(--weight-medium);
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--ease-fast);
+}
+
+.toggleBtn:hover {
+  color: var(--ink);
+  background: var(--surface-1);
+}
+
+.deleteZone {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-3);
+  border: 1.5px dashed var(--danger);
+  border-radius: var(--radius-md);
+  background: var(--danger-muted);
+  color: var(--danger);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  transition: all var(--ease-fast);
+}
+
+.deleteZoneOver {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
 }

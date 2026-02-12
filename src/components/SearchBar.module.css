@@ -16,11 +16,12 @@
   width: 100%;
   padding: var(--sp-3) var(--sp-8) var(--sp-3) var(--sp-3);
   border: 1px solid var(--edge);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--surface-2);
   color: var(--ink);
   font-size: var(--text-base);
   outline: none;
+  box-shadow: var(--shadow-md);
   transition: all var(--ease-fast);
 }
 
@@ -31,6 +32,7 @@
 .input:focus {
   border-color: var(--edge-focus);
   background: var(--surface-3);
+  box-shadow: var(--shadow-lg);
 }
 
 .spinner {
@@ -62,16 +64,18 @@
 
 .results {
   list-style: none;
-  margin-top: var(--sp-1);
-  background: var(--surface-3);
-  border: 1px solid var(--edge);
-  border-radius: var(--radius-md);
+  margin-top: var(--sp-2);
+  background: hsla(228, 22%, 14%, 0.80);
+  backdrop-filter: var(--blur-vibrancy);
+  -webkit-backdrop-filter: var(--blur-vibrancy);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   max-height: 300px;
   overflow-y: auto;
 }
 
 .resultItem {
-  padding: var(--sp-3) var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
   cursor: pointer;
   border-bottom: 1px solid var(--edge-subtle);
   transition: background var(--ease-fast);
@@ -82,7 +86,7 @@
 }
 
 .resultItem:hover {
-  background: var(--surface-2);
+  background: hsla(228, 20%, 20%, 0.60);
 }
 
 .resultName {
@@ -104,4 +108,12 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+[data-theme="light"] .results {
+  background: hsla(0, 0%, 100%, 0.85);
+}
+
+[data-theme="light"] .resultItem:hover {
+  background: hsla(220, 14%, 92%, 0.60);
 }

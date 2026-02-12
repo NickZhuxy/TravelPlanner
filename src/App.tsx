@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './App.module.css';
 import Toolbar from './components/Toolbar';
 import SidePanel from './components/SidePanel/SidePanel';
@@ -86,6 +86,13 @@ function App() {
   const selectedSpot = selectedSpotId
     ? trip.spots.find((s) => s.id === selectedSpotId) ?? null
     : null;
+
+  // Fly to spot when selected (from sidebar or marker click)
+  useEffect(() => {
+    if (selectedSpot) {
+      setFlyToLocation(selectedSpot.coordinates);
+    }
+  }, [selectedSpotId]);
 
   return (
     <div className={styles.app}>

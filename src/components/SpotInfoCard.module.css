@@ -4,9 +4,12 @@
   left: var(--sp-6);
   z-index: 1000;
   width: 320px;
-  background: var(--surface-1);
-  border-radius: var(--radius-lg);
+  background: hsla(228, 22%, 14%, 0.80);
+  backdrop-filter: var(--blur-vibrancy);
+  -webkit-backdrop-filter: var(--blur-vibrancy);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--edge);
+  box-shadow: var(--shadow-lg);
   color: var(--ink);
   overflow: hidden;
 }
@@ -15,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-3) var(--sp-4) var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
   border-bottom: 1px solid var(--edge-subtle);
 }
 
@@ -25,7 +28,7 @@
   font-weight: var(--weight-semibold);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--ink);
   padding: var(--sp-1) var(--sp-2);
   margin-right: var(--sp-2);
@@ -41,6 +44,7 @@
 .nameInput:focus {
   border-color: var(--edge-focus);
   background: var(--surface-2);
+  box-shadow: 0 0 0 3px var(--amber-muted);
 }
 
 .closeBtn {
@@ -49,9 +53,9 @@
   color: var(--ink-muted);
   cursor: pointer;
   font-size: var(--text-lg);
-  padding: 2px var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
   line-height: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   flex-shrink: 0;
   transition: all var(--ease-fast);
 }
@@ -62,7 +66,7 @@
 }
 
 .body {
-  padding: var(--sp-3) var(--sp-4);
+  padding: var(--sp-4) var(--sp-4);
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
@@ -86,15 +90,16 @@
   padding: var(--sp-2);
   background: var(--surface-0);
   border: 1px solid var(--edge);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--ink);
   font-size: var(--text-sm);
   outline: none;
-  transition: border-color var(--ease-fast);
+  transition: all var(--ease-fast);
 }
 
 .input:focus {
   border-color: var(--edge-focus);
+  box-shadow: 0 0 0 3px var(--amber-muted);
 }
 
 .input::placeholder {
@@ -105,17 +110,18 @@
   padding: var(--sp-2);
   background: var(--surface-0);
   border: 1px solid var(--edge);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--ink);
   font-size: var(--text-sm);
   resize: vertical;
   outline: none;
   font-family: inherit;
-  transition: border-color var(--ease-fast);
+  transition: all var(--ease-fast);
 }
 
 .textarea:focus {
   border-color: var(--edge-focus);
+  box-shadow: 0 0 0 3px var(--amber-muted);
 }
 
 .textarea::placeholder {
@@ -141,7 +147,7 @@
   background: transparent;
   color: var(--danger);
   border: 1px solid var(--danger-muted);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
@@ -150,4 +156,8 @@
 
 .removeBtn:hover {
   background: var(--danger-muted);
+}
+
+[data-theme="light"] .card {
+  background: hsla(0, 0%, 100%, 0.85);
 }

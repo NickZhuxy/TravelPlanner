@@ -4,7 +4,7 @@
   gap: var(--sp-2);
   padding: var(--sp-2) var(--sp-3);
   cursor: grab;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: var(--text-sm);
   color: var(--ink-secondary);
   transition: all var(--ease-fast);
@@ -13,6 +13,7 @@
 .item:hover {
   background: var(--surface-1);
   color: var(--ink);
+  box-shadow: var(--shadow-sm);
 }
 
 .item.selected {
@@ -21,8 +22,8 @@
 }
 
 .index {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,9 +55,9 @@
   color: var(--ink-faint);
   cursor: pointer;
   font-size: var(--text-base);
-  padding: 0 var(--sp-1);
+  padding: 2px var(--sp-1);
   line-height: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   flex-shrink: 0;
   opacity: 0;
   transition: all var(--ease-fast);
@@ -82,9 +83,9 @@
   color: var(--ink-faint);
   cursor: pointer;
   font-size: var(--text-base);
-  padding: 0 var(--sp-1);
+  padding: 2px var(--sp-1);
   line-height: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   flex-shrink: 0;
   opacity: 0;
   transition: all var(--ease-fast);

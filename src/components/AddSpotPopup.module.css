@@ -5,13 +5,13 @@
 .name {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
-  color: hsl(228, 28%, 12%);
+  color: var(--ink);
   margin: 0 0 2px;
 }
 
 .address {
   font-size: var(--text-xs);
-  color: hsl(228, 10%, 45%);
+  color: var(--ink-muted);
   margin: 0 0 var(--sp-3);
   line-height: 1.3;
 }
@@ -20,9 +20,9 @@
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--amber);
-  color: hsl(228, 28%, 8%);
+  color: #fff;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   cursor: pointer;
@@ -39,7 +39,7 @@
   gap: var(--sp-2);
   margin: var(--sp-3) 0;
   font-size: var(--text-xs);
-  color: hsl(228, 10%, 55%);
+  color: var(--ink-muted);
 }
 
 .divider::before,
@@ -47,7 +47,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: hsl(228, 10%, 85%);
+  background: var(--edge-strong);
 }
 
 .dayList {
@@ -64,17 +64,18 @@
   gap: var(--sp-2);
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: 1px solid hsl(228, 10%, 85%);
-  border-radius: var(--radius-sm);
-  background: white;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
   font-size: var(--text-xs);
-  color: hsl(228, 20%, 25%);
+  color: var(--ink);
   cursor: pointer;
-  transition: background var(--ease-fast);
+  transition: all var(--ease-fast);
 }
 
 .dayButton:hover {
-  background: hsl(228, 15%, 95%);
+  background: var(--surface-1);
+  border-color: var(--edge-strong);
 }
 
 .dayColor {
