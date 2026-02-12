@@ -1,0 +1,127 @@
+.wrapper {
+  position: relative;
+}
+
+.trigger {
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--surface-1);
+  color: var(--ink-secondary);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: all var(--ease-fast);
+}
+
+.trigger:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--edge-strong);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + var(--sp-2));
+  right: 0;
+  width: 280px;
+  background: var(--surface-1);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--sp-4);
+  z-index: 100;
+}
+
+.section {
+  margin-bottom: var(--sp-4);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--sp-2);
+}
+
+.toggleGroup {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface-2);
+  color: var(--ink-secondary);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: all var(--ease-fast);
+}
+
+.toggleBtn:hover:not(:disabled) {
+  background: var(--surface-3);
+}
+
+.active {
+  background: var(--amber-muted);
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.keyInput {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface-2);
+  color: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: all var(--ease-fast);
+  box-sizing: border-box;
+}
+
+.keyInput::placeholder {
+  color: var(--ink-faint);
+}
+
+.keyInput:focus {
+  border-color: var(--edge-focus);
+  box-shadow: 0 0 0 3px var(--amber-muted);
+}
+
+.helpLink {
+  display: inline-block;
+  margin-top: var(--sp-2);
+  font-size: var(--text-xs);
+  color: var(--amber);
+  text-decoration: none;
+}
+
+.helpLink:hover {
+  text-decoration: underline;
+}
+
+.note {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  line-height: 1.4;
+}

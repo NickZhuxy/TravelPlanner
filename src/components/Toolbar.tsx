@@ -1,11 +1,24 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTrip } from '../hooks/useTrip';
 import { exportTrip, importTrip } from '../services/storage';
+import SettingsPanel from './SettingsPanel';
 import styles from './Toolbar.module.css';
+
+function getInitialTheme(): 'dark' | 'light' {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  return 'dark';
+}
 
 export default function Toolbar() {
   const { trip, setTripName, replaceTrip } = useTrip();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const handleExport = () => {
     exportTrip(trip);
@@ -32,6 +45,13 @@ export default function Toolbar() {
         onChange={(e) => setTripName(e.target.value)}
       />
       <div className={styles.actions}>
+        <SettingsPanel />
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {theme === 'dark' ? '\u2600' : '\u263E'}
+        </button>
         <button onClick={handleExport}>Export</button>
         <button onClick={() => fileInputRef.current?.click()}>Import</button>
         <input

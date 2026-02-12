@@ -1,8 +1,10 @@
 import type { SearchResult } from '../types';
+import { useSettings } from '../hooks/useSettings';
+import { searchPlacesGoogle } from './google/geocoding';
 
 const NOMINATIM_BASE = 'https://nominatim.openstreetmap.org';
 
-export async function searchPlaces(query: string): Promise<SearchResult[]> {
+async function searchPlacesNominatim(query: string): Promise<SearchResult[]> {
   if (!query.trim()) return [];
 
   const params = new URLSearchParams({
@@ -29,4 +31,14 @@ export async function searchPlaces(query: string): Promise<SearchResult[]> {
     coordinates: [parseFloat(item.lat), parseFloat(item.lon)] as [number, number],
     displayName: item.display_name,
   }));
+}
+
+export async function searchPlaces(query: string): Promise<SearchResult[]> {
+  const { mapProvider, googleApiKey } = useSettings.getState();
+
+  if (mapProvider === 'google' && googleApiKey) {
+    return searchPlacesGoogle(query, googleApiKey);
+  }
+
+  return searchPlacesNominatim(query);
 }

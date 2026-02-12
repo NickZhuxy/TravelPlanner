@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useTrip } from './useTrip';
+import { useSettings } from './useSettings';
 import { fetchRoute } from '../services/routing';
 import { generateId } from '../utils/id';
 import type { Segment, TransportMode } from '../types';
@@ -13,11 +14,13 @@ function dayFingerprint(day: { id: string; spotIds: string[]; segments: { fromSp
 
 export function useDayRoutes() {
   const { trip, setDaySegments } = useTrip();
+  const { mapProvider, googleApiKey } = useSettings();
   const pendingRef = useRef<Set<string>>(new Set());
   const prevFingerprintRef = useRef<string>('');
 
   useEffect(() => {
-    const fingerprint = trip.days.map(dayFingerprint).join('||');
+    const providerKey = `${mapProvider}:${googleApiKey ? 'keyed' : 'nokey'}`;
+    const fingerprint = providerKey + '||' + trip.days.map(dayFingerprint).join('||');
     if (fingerprint === prevFingerprintRef.current) return;
     prevFingerprintRef.current = fingerprint;
 
@@ -93,13 +96,13 @@ export function useDayRoutes() {
               });
             }
           })
-          .catch(() => {
-            // Route fetch failed — segment stays with null geometry
+          .catch((err) => {
+            console.warn(`Route fetch failed (${seg.fromSpotId} → ${seg.toSpotId}, ${seg.mode}):`, err);
           })
           .finally(() => {
             pendingRef.current.delete(pendingKey);
           });
       }
     }
-  });
+  }, [trip.days, trip.spots, mapProvider, googleApiKey]);
 }

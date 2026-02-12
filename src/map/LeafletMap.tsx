@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMapEvents, useMap } from 'react-leaflet';
+import { useSettings } from '../hooks/useSettings';
+import { getGoogleTileSession, getTileUrl } from '../services/google/tiles';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './markerStyles.css';
@@ -123,6 +125,37 @@ function PendingMarker({
   );
 }
 
+const OSM_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+const GOOGLE_ATTRIBUTION = '&copy; Google Maps';
+
+function MapTileLayer() {
+  const { mapProvider, googleApiKey } = useSettings();
+  const [tileUrl, setTileUrl] = useState(OSM_TILE_URL);
+  const [attribution, setAttribution] = useState(OSM_ATTRIBUTION);
+
+  useEffect(() => {
+    if (mapProvider === 'google' && googleApiKey) {
+      getGoogleTileSession(googleApiKey)
+        .then((session) => {
+          setTileUrl(getTileUrl(session, googleApiKey));
+          setAttribution(GOOGLE_ATTRIBUTION);
+        })
+        .catch((err) => {
+          console.warn('Failed to create Google tile session, falling back to OSM:', err);
+          setTileUrl(OSM_TILE_URL);
+          setAttribution(OSM_ATTRIBUTION);
+        });
+    } else {
+      setTileUrl(OSM_TILE_URL);
+      setAttribution(OSM_ATTRIBUTION);
+    }
+  }, [mapProvider, googleApiKey]);
+
+  // key forces TileLayer remount when URL changes (Leaflet requirement)
+  return <TileLayer key={tileUrl} attribution={attribution} url={tileUrl} />;
+}
+
 function clamp(min: number, value: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
@@ -153,10 +186,7 @@ export default function LeafletMap({
 
   return (
     <MapContainer center={center} zoom={zoom} className={styles.map}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <MapTileLayer />
       <MapClickHandler onClick={onMapClick} />
       <MapController flyToLocation={flyToLocation} />
       <ZoomWatcher onZoomChange={setZoomLevel} />
