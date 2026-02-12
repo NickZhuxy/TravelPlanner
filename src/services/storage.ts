@@ -31,7 +31,11 @@ export function migrateTrip(trip: Trip): Trip {
 }
 
 export function saveTrip(trip: Trip): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trip));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(trip));
+  } catch (e) {
+    console.warn('Failed to save trip to localStorage:', e);
+  }
 }
 
 export function loadTrip(): Trip | null {

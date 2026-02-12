@@ -3,6 +3,7 @@ import type { Trip, Spot, Day, Segment } from '../types';
 import { generateId } from '../utils/id';
 import { getDayColor } from '../utils/colors';
 import { saveTrip, loadTrip } from '../services/storage';
+import { useSelection } from './useSelection';
 
 interface TripState {
   trip: Trip;
@@ -103,6 +104,8 @@ export const useTrip = create<TripState>((set, get) => {
           })),
         },
       }));
+      const sel = useSelection.getState();
+      if (sel.selectedSpotId === id) sel.clearSelection();
       persist();
     },
 
@@ -146,6 +149,8 @@ export const useTrip = create<TripState>((set, get) => {
         });
         return { trip: { ...s.trip, days: relabeled } };
       });
+      const sel = useSelection.getState();
+      if (sel.selectedSegmentDayId === id) sel.clearSelection();
       persist();
     },
 
